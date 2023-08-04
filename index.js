@@ -1,7 +1,6 @@
 var canvas = document.getElementById("clockCanvas");
 var context = canvas.getContext("2d");
 var face = document.getElementById("imgClockFace");
-var hand = document.getElementById("imgClockHand");
 var radiansFactor = Math.PI / 180;
 var minuteRadius = 75;
 var hourRadius = 50;
