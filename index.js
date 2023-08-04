@@ -1,13 +1,15 @@
 var canvas = document.getElementById("clockCanvas");
 var context = canvas.getContext("2d");
 var face = document.getElementById("imgClockFace");
-var radiansPerDegree = Math.PI / 180;
-var minuteRadius = 75;
-var hourRadius = 50;
-var degreesPerHour = 30;
-var secondRadius = 70;
-var clockDiameter = 200;
+
+var clockDiameter = 300;
+const secondRadius = clockDiameter / 3;
+const minuteRadius = secondRadius;
+const hourRadius = clockDiameter / 4;
+
 var gap = 200;
+const radiansPerHour = 0.52359878;
+const radiansPerSecond = 0.10471976;
 
 function getPoint(originX, originY, radians, radius) {
   return {
@@ -35,22 +37,22 @@ function drawSecondHand(originX, originY, secondPosition) {
 }
 
 function getMinuteRadians(minute, second) {
-  return (minute - 15 + second / 60) * 6 * radiansPerDegree;
+  return (minute - 15 + second / 60) * radiansPerSecond;
 }
 
 function getHourRadians(hour, minute) {
-  return (hour - 3 + minute / 60) * degreesPerHour * radiansPerDegree;
+  return (hour - 3 + minute / 60) * radiansPerHour;
 }
 
 function getSecondRadians(second) {
-  return (second - 15) * 6 * radiansPerDegree;
+  return (second - 15) * radiansPerSecond;
 }
 
 function drawClock(originX, originY, hour, minute, second) {
   context.drawImage(
     face,
-    originX - 100,
-    originY - 100,
+    originX - clockDiameter / 2,
+    originY - clockDiameter / 2,
     clockDiameter,
     clockDiameter
   );
@@ -99,17 +101,18 @@ function getTime(offset) {
 var bstOffset = 1;
 var sydneyOffset = 10;
 function drawClocks() {
+  const clockRadius = clockDiameter / 2;
   context.clearRect(0, 0, canvas.width, clockDiameter);
   var second = new Date().getSeconds();
   var [bstHour, bstMinute] = getTime(bstOffset);
-  drawClock(100, 100, bstHour, bstMinute, second);
+  drawClock(clockRadius, clockRadius, bstHour, bstMinute, second);
   var [sydneyHour, sydneyMinute] = getTime(sydneyOffset);
-  drawClock(clockDiameter + gap, 100, sydneyHour, sydneyMinute, second);
+  drawClock(clockDiameter + gap, clockRadius, sydneyHour, sydneyMinute, second);
 }
 
 function drawFlags() {
   var uk = document.getElementById("imgUk");
-  context.drawImage(uk, 25, clockDiameter, 150, 90);
+  context.drawImage(uk, (clockDiameter - 150) / 2, clockDiameter, 150, 90);
   var sydney = document.getElementById("imgSydney");
   context.drawImage(sydney, clockDiameter + gap - 80, clockDiameter, 160, 107);
 }
