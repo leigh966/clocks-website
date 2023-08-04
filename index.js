@@ -83,8 +83,12 @@ function drawClocks() {
   drawClock(clockDiameter + gap, 100, sydneyHour, sydneyMinute, second);
 }
 
+function drawFlags() {
+  var uk = document.getElementById("imgUk");
+  context.drawImage(uk, 25, clockDiameter, 150, 90);
+  var sydney = document.getElementById("imgSydney");
+  context.drawImage(sydney, clockDiameter + gap - 80, clockDiameter, 160, 107);
+}
+
 setInterval(drawClocks, 100);
-var uk = document.getElementById("imgUk");
-context.drawImage(uk, 25, clockDiameter, 150, 90);
-var sydney = document.getElementById("imgSydney");
-context.drawImage(sydney, clockDiameter + gap - 80, clockDiameter, 160, 107);
+setTimeout(drawFlags, 500);
