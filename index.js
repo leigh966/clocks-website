@@ -9,8 +9,7 @@ var secondRadius = 70;
 var clockDiameter = 200;
 var gap = 200;
 
-function getPoint(originX, originY, degrees, radius) {
-  let radians = degrees * radiansPerDegree;
+function getPoint(originX, originY, radians, radius) {
   return {
     x: originX + radius * Math.cos(radians),
     y: originY + radius * Math.sin(radians),
@@ -35,6 +34,18 @@ function drawSecondHand(originX, originY, secondPosition) {
   context.stroke();
 }
 
+function getMinuteRadians(minute, second) {
+  return (minute - 15 + second / 60) * 6 * radiansPerDegree;
+}
+
+function getHourRadians(hour, minute) {
+  return (hour - 3 + minute / 60) * degreesPerHour * radiansPerDegree;
+}
+
+function getSecondRadians(second) {
+  return (second - 15) * 6 * radiansPerDegree;
+}
+
 function drawClock(originX, originY, hour, minute, second) {
   context.drawImage(
     face,
@@ -43,13 +54,26 @@ function drawClock(originX, originY, hour, minute, second) {
     clockDiameter,
     clockDiameter
   );
-  let minuteDegrees = (minute - 15) * 6;
-  let minutePosition = getPoint(originX, originY, minuteDegrees, minuteRadius);
-  let hourDegrees = (hour - 3 + minute / 60) * degreesPerHour;
-  let hourPosition = getPoint(originX, originY, hourDegrees, hourRadius);
 
-  let secondDegrees = (second - 15) * 6;
-  let secondPosition = getPoint(originX, originY, secondDegrees, secondRadius);
+  let minutePosition = getPoint(
+    originX,
+    originY,
+    getMinuteRadians(minute, second),
+    minuteRadius
+  );
+  let hourPosition = getPoint(
+    originX,
+    originY,
+    getHourRadians(hour, minute),
+    hourRadius
+  );
+
+  let secondPosition = getPoint(
+    originX,
+    originY,
+    getSecondRadians(second),
+    secondRadius
+  );
   drawBlackHands(originX, originY, minutePosition, hourPosition);
   drawSecondHand(originX, originY, secondPosition);
 }
